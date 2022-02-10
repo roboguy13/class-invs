@@ -1,0 +1,7 @@
+###
+
+{ not (p == 0) ; Person(p, 0, 0) }
+  void marry(loc p)
+{ not (p == 0) ; Person(p, p, 1) }
+
+###

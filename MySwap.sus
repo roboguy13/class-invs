@@ -1,0 +1,13 @@
+###
+
+void swap(loc x, loc y)
+  { x :-> a ** y :-> b }
+  { x :-> b ** y :-> a }
+{
+  let aRead = *x;
+  let bRead = *y;
+  *x = bRead;
+  *y = aRead;
+}
+
+###

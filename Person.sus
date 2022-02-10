@@ -1,0 +1,12 @@
+###
+
+/* It looks like we cannot express the property Person(q, p, m) in the predicate */
+
+void marry(loc p, loc q)
+  { not (p == 0) /\ not (q == 0) ; Person(p, 0, 0) ** Person(q, 0, 0) }
+  { Person(p, q, 1) ** Person(q, p, 1) }
+{
+  ??
+}
+
+###

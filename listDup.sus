@@ -1,0 +1,10 @@
+###
+
+void listDup(loc x, loc y)
+  { y :-> 0 ** x :-> listX ** list(listX, vals) }
+  { x :-> listX ** y :-> listY ** list(listX, vals) ** list(listY, vals) }
+{
+  ??
+}
+
+###

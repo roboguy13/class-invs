@@ -1,0 +1,15 @@
+###
+
+void buildBudget(loc x, loc days, loc weeks)
+  { (d == 0 ==> w == 0) /\ (w == 0 ==> d == 0) ; x :-> 0 ** days :-> d ** weeks :-> w ** list(weeks, weekVals) ** list(days, dayVals) }
+  { x :-> y ** list(weeks, weekVals) ** list(days, dayVals) ** Budget(y, days, weeks, dayVals, weekVals)  }
+{
+  let dayVal = *days;
+  let weekVal = *weeks;
+  if (dayVal == 0 && weekVal == 0) {
+  } else {
+    ??
+  }
+}
+
+###
