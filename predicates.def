@@ -12,9 +12,18 @@ predicate list(loc x, set s)
 
 predicate Budget(loc x, loc days, loc weeks, set dayVals, set weekVals)
 {
-| days == 0 && weeks == 0 => { x == 0 ; emp }
+| days == 0 && weeks == 0 => { x :-> 0 ** (x+1) :-> 0 ** (x+2) :-> 0 }
+
 | x == 0 => { days == 0 && weeks == 0 ; emp }
-| not (days == 0) && not (weeks == 0) => { dayVals =i {d} ++ dayVals1 /\ weekVals =i {w} ++ weekVals1 /\ w == (d*7) ; [x, 3] ** [days, 2] ** [weeks, 2] ** x :-> d ** (x+1) :-> w ** (x+2) :-> nxt ** days :-> d ** weeks :-> w ** (days+1) :-> daysNxt ** (weeks+1) :-> weeksNxt ** Budget(nxt, daysNxt, weeksNxt, dayVals1, weekVals1) }
+
+| not (days == 0) && not (weeks == 0) =>
+    { dayVals =i {d} ++ dayVals1 /\ weekVals =i {w} ++ weekVals1 /\ w == (d*7)
+        ;
+       [x, 3] ** [days, 2] ** [weeks, 2] **
+       x :-> d ** (x+1) :-> w ** (x+2) :-> nxt ** days :-> d ** weeks :-> w ** (days+1) :-> daysNxt ** (weeks+1) :-> weeksNxt **
+       Budget(nxt, daysNxt, weeksNxt, dayVals1, weekVals1)
+    }
+
 | (not (days == 0) && weeks == 0) || (days == 0 && not (weeks == 0)) => { false ; emp }
 }
 

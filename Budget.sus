@@ -1,14 +1,22 @@
 ###
 
 void buildBudget(loc x, loc days, loc weeks)
-  { (d == 0 ==> w == 0) /\ (w == 0 ==> d == 0) ; x :-> 0 ** days :-> d ** weeks :-> w ** list(weeks, weekVals) ** list(days, dayVals) }
-  { x :-> y ** list(weeks, weekVals) ** list(days, dayVals) ** Budget(y, days, weeks, dayVals, weekVals)  }
+  { x :-> 0 ** (x+1) :-> 0 ** (x+2) :-> 0 ** days :-> d ** weeks :-> w ** list(weeks, weekVals) ** list(days, dayVals) }
+  { list(weeks, weekVals) ** list(days, dayVals) ** Budget(x, days, weeks, dayVals, weekVals)  }
 {
-  let dayVal = *days;
-  let weekVal = *weeks;
-  if (dayVal == 0 && weekVal == 0) {
+  if (days == 0 && weeks == 0) {
   } else {
-    ??
+    let dayVal = *days;
+    let weekVal = *weeks;
+    *x = dayVal;
+    *(x+1) = weekVal;
+
+    let daysNxt = *(days+1);
+    let weeksNxt = *(weeks+1);
+
+    let nxt = malloc(3);
+    buildBudget(nxt, daysNxt, weeksNxt);
+    *(x+2) = nxt;
   }
 }
 
