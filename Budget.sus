@@ -1,23 +1,10 @@
 ###
 
-void buildBudget(loc x, loc days, loc weeks)
-  { x :-> 0 ** (x+1) :-> 0 ** (x+2) :-> 0 ** days :-> d ** weeks :-> w ** list(weeks, weekVals) ** list(days, dayVals) }
-  { list(weeks, weekVals) ** list(days, dayVals) ** Budget(x, days, weeks, dayVals, weekVals)  }
+void adjustForCOLA(loc x, int cola, loc days)
+  { x :-> 0 ** list(days, dayVals) }
+  { x :-> r ** list(days, dayVals) ** Budget(r, cola, dayVals, weekVals) }
 {
-  if (days == 0 && weeks == 0) {
-  } else {
-    let dayVal = *days;
-    let weekVal = *weeks;
-    *x = dayVal;
-    *(x+1) = weekVal;
-
-    let daysNxt = *(days+1);
-    let weeksNxt = *(weeks+1);
-
-    let nxt = malloc(3);
-    buildBudget(nxt, daysNxt, weeksNxt);
-    *(x+2) = nxt;
-  }
+  ??
 }
 
 ###

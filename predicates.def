@@ -10,20 +10,62 @@ predicate list(loc x, set s)
 | not (x == 0) => { s =i {v} ++ s1 ; [x, 2] ** x :-> v ** (x+1) :-> nxt ** list(nxt, s1) }
 }
 
-predicate Budget(loc x, loc days, loc weeks, set dayVals, set weekVals)
+predicate PairList(loc x, set fstVals, set sndVals)
 {
-| days == 0 && weeks == 0 => { x :-> 0 ** (x+1) :-> 0 ** (x+2) :-> 0 }
+| x == 0 => { fstVals =i {} /\ sndVals =i {} ; emp }
+| not (x == 0) =>
+   {
+     fstVals =i {vFst} ++ fstVals1 /\ sndVals =i {vSnd} ++ sndVals1
+       ;
+     [x, 3] ** x :-> vFst ** (x+1) :-> vSnd ** (x+2) :-> nxt ** PairList(nxt, fstVals1, sndVals1)
+   }
+}
 
-| x == 0 => { days == 0 && weeks == 0 ; emp }
+predicate Pair(loc x, int fst, int snd)
+{
+| true => { [x,2] ** x :-> fst ** (x+1) :-> snd }
+}
 
-| not (days == 0) && not (weeks == 0) =>
-    { dayVals =i {d} ++ dayVals1 /\ weekVals =i {w} ++ weekVals1 /\ w == (d*7)
+predicate Budget(loc x, int mult, set dayVals, set weekVals)
+{
+| x == 0 => { dayVals =i {} /\ weekVals =i {} ; emp }
+
+| not (x == 0) =>
+    { dayVals =i {d1} ++ dayVals1 /\ weekVals =i {w} ++ weekVals1 /\ w == 7*d /\ d == mult*d1
         ;
-       [x, 3] ** [days, 2] ** [weeks, 2] **
-       x :-> d ** (x+1) :-> w ** (x+2) :-> nxt ** days :-> d ** weeks :-> w ** (days+1) :-> daysNxt ** (weeks+1) :-> weeksNxt **
-       Budget(nxt, daysNxt, weeksNxt, dayVals1, weekVals1)
+       [x, 2] **
+       x :-> p ** (x+1) :-> nxt **
+       [p, 2] **
+       p :-> d ** (p+1) :-> w **
+       Budget(nxt, mult, dayVals1, weekVals1)
     }
+}
 
-| (not (days == 0) && weeks == 0) || (days == 0 && not (weeks == 0)) => { false ; emp }
+predicate HanoiTower(loc x, int topSize, set disks)
+{
+| x == 0 => { disks =i {} ; emp }
+| not (x == 0) =>
+    {
+      disks =i {d} ++ disks1 /\ d <= topSize
+        ;
+      [x, 2] **
+      x :-> d **
+      (x+1) :-> nxt **
+      HanoiTower(nxt, topSize, disks1)
+    }
+}
+
+
+predicate NatList(loc x, set s)
+{
+| x == 0 => { s =i {} ; emp }
+| not (x == 0) => { s =i {v} ++ s1 /\ 0 <= v ; [x, 2] ** x :-> v ** (x+1) :-> nxt ** NatList(nxt, s1) }
+}
+
+predicate Sorted(loc x, int start, set items)
+{
+| x == 0 => { items =i {} ; emp }
+
+| not (x == 0) => { items =i {v} ++ items1 /\ start <= v ; [x,2] ** x :-> v ** (x+1) :-> nxt ** Sorted(nxt, v, items1) }
 }
 
