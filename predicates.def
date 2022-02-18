@@ -10,6 +10,12 @@ predicate list(loc x, set s)
 | not (x == 0) => { s =i {v} ++ s1 ; [x, 2] ** x :-> v ** (x+1) :-> nxt ** list(nxt, s1) }
 }
 
+predicate list2(loc x, set s)
+{
+| x == 0 => { s =i {} ; emp }
+| not (x == 0) => { s =i {v1} ++ s1 /\ v == 2*v1 ; [x, 2] ** x :-> v ** (x+1) :-> nxt ** list2(nxt, s1) }
+}
+
 predicate PairList(loc x, set fstVals, set sndVals)
 {
 | x == 0 => { fstVals =i {} /\ sndVals =i {} ; emp }
@@ -26,7 +32,36 @@ predicate Pair(loc x, int fst, int snd)
 | true => { [x,2] ** x :-> fst ** (x+1) :-> snd }
 }
 
-predicate Budget(loc x, int mult, set dayVals, set weekVals)
+predicate Budget(loc x, set dayVals, set weekVals)
+{
+| x == 0 => { dayVals =i {} /\ weekVals =i {} ; emp }
+
+| not (x == 0) =>
+    { dayVals =i {d} ++ dayVals1 /\ weekVals =i {w} ++ weekVals1 /\ w == 7*d
+        ;
+       [x, 2] **
+       x :-> p ** (x+1) :-> nxt **
+       [p, 2] **
+       p :-> d ** (p+1) :-> w **
+       Budget(nxt, dayVals1, weekVals1)
+    }
+}
+predicate Budget2(loc x, set dayVals, set weekVals)
+{
+| x == 0 => { dayVals =i {} /\ weekVals =i {} ; emp }
+
+| not (x == 0) =>
+    { dayVals =i {d1} ++ dayVals1 /\ weekVals =i {w} ++ weekVals1 /\ w == 7*d /\ d == 2*d1
+        ;
+       [x, 2] **
+       x :-> p ** (x+1) :-> nxt **
+       [p, 2] **
+       p :-> d ** (p+1) :-> w **
+       Budget2(nxt, dayVals1, weekVals1)
+    }
+}
+
+predicate BudgetWithMult(loc x, int mult, set dayVals, set weekVals)
 {
 | x == 0 => { dayVals =i {} /\ weekVals =i {} ; emp }
 
@@ -37,7 +72,7 @@ predicate Budget(loc x, int mult, set dayVals, set weekVals)
        x :-> p ** (x+1) :-> nxt **
        [p, 2] **
        p :-> d ** (p+1) :-> w **
-       Budget(nxt, mult, dayVals1, weekVals1)
+       BudgetWithMult(nxt, mult, dayVals1, weekVals1)
     }
 }
 

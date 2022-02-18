@@ -1,8 +1,8 @@
 ###
 
 void adjustForCOLA(loc x, int cola, loc days)
-  { x :-> 0 ** list(days, dayVals) }
-  { x :-> r ** list(days, dayVals) ** Budget(r, cola, dayVals, weekVals) }
+  { x :-> y ** Budget(y, dayVals, weekVals) }
+  { x :-> r ** Budget2(r, dayVals, weekVals) }
 {
   ??
 }
