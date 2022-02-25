@@ -46,18 +46,20 @@ predicate Budget(loc x, set dayVals, set weekVals)
        Budget(nxt, dayVals1, weekVals1)
     }
 }
-predicate Budget2(loc x, set dayVals, set weekVals)
+predicate Budget2(loc x, int cola, set dayVals, set weekVals)
 {
 | x == 0 => { dayVals =i {} /\ weekVals =i {} ; emp }
 
 | not (x == 0) =>
-    { dayVals =i {d1} ++ dayVals1 /\ weekVals =i {w} ++ weekVals1 /\ w == 7*d /\ d == 2*d1
+    { dayVals =i {d1} ++ dayVals1 /\ weekVals =i {w1} ++ weekVals1
+        /\ w1 == 7*d1 /\ d == cola*d1
+        /\ w == 7*d
         ;
        [x, 2] **
        x :-> p ** (x+1) :-> nxt **
        [p, 2] **
        p :-> d ** (p+1) :-> w **
-       Budget2(nxt, dayVals1, weekVals1)
+       Budget2(nxt, cola, dayVals1, weekVals1)
     }
 }
 

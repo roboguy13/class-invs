@@ -2,7 +2,7 @@
 
 void adjustForCOLA(loc x, int cola, loc days)
   { x :-> y ** Budget(y, dayVals, weekVals) }
-  { x :-> r ** Budget2(r, dayVals, weekVals) }
+  { x :-> r ** Budget2(r, cola, dayVals, weekVals) }
 {
   ??
 }
