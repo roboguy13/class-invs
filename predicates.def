@@ -32,21 +32,7 @@ predicate Pair(loc x, int fst, int snd)
 | true => { [x,2] ** x :-> fst ** (x+1) :-> snd }
 }
 
-predicate Budget(loc x, set dayVals, set weekVals)
-{
-| x == 0 => { dayVals =i {} /\ weekVals =i {} ; emp }
-
-| not (x == 0) =>
-    { dayVals =i {d} ++ dayVals1 /\ weekVals =i {w} ++ weekVals1 /\ w == 7*d
-        ;
-       [x, 2] **
-       x :-> p ** (x+1) :-> nxt **
-       [p, 2] **
-       p :-> d ** (p+1) :-> w **
-       Budget(nxt, dayVals1, weekVals1)
-    }
-}
-predicate Budget2(loc x, int cola, set dayVals, set weekVals)
+predicate Budget(loc x, int cola, set dayVals, set weekVals)
 {
 | x == 0 => { dayVals =i {} /\ weekVals =i {} ; emp }
 
@@ -59,7 +45,7 @@ predicate Budget2(loc x, int cola, set dayVals, set weekVals)
        x :-> p ** (x+1) :-> nxt **
        [p, 2] **
        p :-> d ** (p+1) :-> w **
-       Budget2(nxt, cola, dayVals1, weekVals1)
+       Budget(nxt, cola, dayVals1, weekVals1)
     }
 }
 
@@ -77,6 +63,20 @@ predicate BudgetWithMult(loc x, int mult, set dayVals, set weekVals)
        BudgetWithMult(nxt, mult, dayVals1, weekVals1)
     }
 }
+
+
+predicate _budget(loc x, set set_d, set set_w)
+{
+| x == null => { set_d =i {} && set_w =i {} ; emp }
+| not (x == null) => { set_d =i {_d} ++ orig_set_d && set_w =i {_w} ++ orig_set_w && _w == (7 * _d) ; [x, 3] ** x :-> _w ** (x+1) :-> _d ** (x+2) :-> _nxt ** _budget(_nxt, orig_set_d, orig_set_w) }
+}
+
+predicate _budget2(loc x, int _cola, set set_d, set set_w)
+{
+| x == null => { set_d =i {} && set_w =i {} ; emp }
+| not (x == null) => { set_d =i {orig_d} ++ orig_set_d && set_w =i {orig_w} ++ orig_set_w && orig_w == (7 * orig_d) && _w == (7 * _d) && _d == (_cola * orig_d) ; [x, 3] ** x :-> _w ** (x+1) :-> _d ** (x+2) :-> _nxt ** _budget2(_nxt, _cola, orig_set_d, orig_set_w) }
+}
+
 
 predicate HanoiTower(loc x, int topSize, set disks)
 {
