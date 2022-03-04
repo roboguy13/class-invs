@@ -32,10 +32,26 @@ predicate Pair(loc x, int fst, int snd)
 | true => { [x,2] ** x :-> fst ** (x+1) :-> snd }
 }
 
+predicate ListSum(loc x, int sum, set vals)
+{
+| x == 0 => { sum == 0 ; emp }
+| not (x == 1) => { vals =i {v} + vals1 && sum == v+acc ; x :-> v ** (x+1) :-> nxt ** ListSum(nxt, acc, vals1) }
+}
+
+predicate PairListEq(loc x, set fstVals, set sndVals)
+{
+| x == 0 => { fstVals =i {} && sndVals =i {} ; emp }
+| not (x == 0) => {
+     fstVals =i {vFst} ++ fstVals1 && sndVals =i {vSnd} ++ sndVals1 && fstSum == sndSum
+       ;
+     [x, 3] ** x :-> vFst ** (x+1) :-> vSnd ** (x+2) :-> nxt ** PairListEq(nxt, fstVals1, sndVals1)
+      ** ListSum(x, fstSum, fstVals) ** ListSum(x+1, sndSum, sndVals)
+  }
+}
+
 predicate Budget(loc x, int cola, set dayVals, set weekVals)
 {
 | x == 0 => { dayVals =i {} /\ weekVals =i {} ; emp }
-
 | not (x == 0) =>
     { dayVals =i {d1} ++ dayVals1 /\ weekVals =i {w1} ++ weekVals1
         /\ w1 == 7*d1 /\ d == cola*d1
@@ -65,16 +81,10 @@ predicate BudgetWithMult(loc x, int mult, set dayVals, set weekVals)
 }
 
 
-predicate _budget(loc x, set set_d, set set_w)
+predicate M_budget2(loc x, int M_cola, set set_d, set set_w)
 {
 | x == null => { set_d =i {} && set_w =i {} ; emp }
-| not (x == null) => { set_d =i {_d} ++ orig_set_d && set_w =i {_w} ++ orig_set_w && _w == (7 * _d) ; [x, 3] ** x :-> _w ** (x+1) :-> _d ** (x+2) :-> _nxt ** _budget(_nxt, orig_set_d, orig_set_w) }
-}
-
-predicate _budget2(loc x, int _cola, set set_d, set set_w)
-{
-| x == null => { set_d =i {} && set_w =i {} ; emp }
-| not (x == null) => { set_d =i {orig_d} ++ orig_set_d && set_w =i {orig_w} ++ orig_set_w && orig_w == (7 * orig_d) && _w == (7 * _d) && _d == (_cola * orig_d) ; [x, 3] ** x :-> _w ** (x+1) :-> _d ** (x+2) :-> _nxt ** _budget2(_nxt, _cola, orig_set_d, orig_set_w) }
+| not (x == null) => { set_d =i {orig_d} ++ orig_set_d && set_w =i {orig_w} ++ orig_set_w && orig_w == (7 * orig_d) && M_w == (7 * M_d) && M_d == (M_cola * orig_d) ; [x, 3] ** x :-> M_w ** (x+1) :-> M_d ** (x+2) :-> M_nxt ** M_budget2(M_nxt, M_cola, orig_set_d, orig_set_w) }
 }
 
 
