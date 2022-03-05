@@ -1,0 +1,11 @@
+###
+
+void listSumCons(int v, loc x)
+  { x :-> p ** ListSum(p, sum, vals) }
+  { sum1 == v+sum /\ vals1 =i {v} + vals ; x :-> q ** ListSum(q, sum1, vals1) }
+{
+  ??
+}
+
+###
+

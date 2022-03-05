@@ -35,7 +35,7 @@ predicate Pair(loc x, int fst, int snd)
 predicate ListSum(loc x, int sum, set vals)
 {
 | x == 0 => { sum == 0 ; emp }
-| not (x == 1) => { vals =i {v} + vals1 && sum == v+acc ; x :-> v ** (x+1) :-> nxt ** ListSum(nxt, acc, vals1) }
+| not (x == 0) => { vals =i {v} + vals1 && sum == v+acc ; x :-> v ** (x+1) :-> nxt ** ListSum(nxt, acc, vals1) }
 }
 
 predicate PairListEq(loc x, set fstVals, set sndVals)
