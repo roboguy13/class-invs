@@ -32,6 +32,23 @@ predicate Pair(loc x, int fst, int snd)
 | true => { [x,2] ** x :-> fst ** (x+1) :-> snd }
 }
 
+predicate RedBlack(loc x, int color, int pathLength, set vals)
+{
+| x == 0 => { vals =i {} && color == 0 && pathLength == 0 ; emp }
+| not (x == 0) =>
+    { (not (color == 1) || (colorA == 0 && colorB == 0)) &&
+      (not (colorA == 0 || colorB == 0) || (pathLength1 == pathLength+1)) &&
+      (not (colorA == 1 && colorB == 1) || (pathLength1 == pathLength)) &&
+      vals =i {v} + valsA + valsB
+        ;
+      x :-> v **
+      x :-> a **
+      x :-> b **
+      RedBlack(a, colorA, pathLength1, valsA) **
+      RedBlack(b, colorB, pathLength1, valsB)
+    }
+}
+
 predicate StopLight(loc x, int red, int yellow, int green) {
 | true => {
     (red == 1 && yellow == 0 && green == 0) ||

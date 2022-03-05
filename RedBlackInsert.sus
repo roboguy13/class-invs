@@ -1,0 +1,11 @@
+###
+
+void insertRB(loc x, int v)
+  { x :-> p ** RedBlack(p, color, pathLength, vals) }
+  { vals1 =i {v} + vals ; x :-> q ** RedBlack(q, color1, pathLength1, vals1) }
+{
+  ??
+}
+
+###
+
