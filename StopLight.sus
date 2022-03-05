@@ -1,0 +1,11 @@
+###
+
+void setToGreen(loc x)
+  { x :-> p ** StopLight(p) }
+  { x :-> q ** StopLight(q) ** (q+2) :-> 1 }
+{
+  ??
+}
+
+###
+
