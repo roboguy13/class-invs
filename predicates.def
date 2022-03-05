@@ -37,8 +37,8 @@ predicate RedBlack(loc x, int color, int pathLength, set vals)
 | x == 0 => { vals =i {} && color == 0 && pathLength == 0 ; emp }
 | not (x == 0) =>
     { (not (color == 1) || (colorA == 0 && colorB == 0)) &&
-      (not (colorA == 0 || colorB == 0) || (pathLength1 == pathLength+1)) &&
-      (not (colorA == 1 && colorB == 1) || (pathLength1 == pathLength)) &&
+      (not (colorA == 0 || colorB == 0) || (pathLength == pathLength1 + 1)) &&
+      (not (colorA == 1 && colorB == 1) || (pathLength == pathLength1)) &&
       (color == 0 || color == 1) &&
       (colorA == 0 || colorA == 1) &&
       (colorB == 0 || colorB == 1) &&
