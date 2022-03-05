@@ -34,13 +34,9 @@ predicate Pair(loc x, int fst, int snd)
 
 predicate StopLight(loc x, int red, int yellow, int green) {
 | true => {
-    (red == 0 || red == 1) &&
-    (yellow == 0 || yellow == 1) &&
-    (green == 0 || green == 1) &&
-    (    (red == 1 && yellow == 0 && green == 0)
-      || (red == 0 && yellow == 1 && green == 0)
-      || (red == 0 && yellow == 0 && green == 1)
-    )
+    (red == 1 && yellow == 0 && green == 0) ||
+    (red == 0 && yellow == 1 && green == 0) ||
+    (red == 0 && yellow == 0 && green == 1)
       ;
     x :-> red **
     (x+1) :-> yellow **
