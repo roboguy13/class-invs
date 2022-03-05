@@ -32,7 +32,7 @@ predicate Pair(loc x, int fst, int snd)
 | true => { [x,2] ** x :-> fst ** (x+1) :-> snd }
 }
 
-predicate StopLight(loc x) {
+predicate StopLight(loc x, int red, int yellow, int green) {
 | true => {
     (red == 0 || red == 1) &&
     (yellow == 0 || yellow == 1) &&

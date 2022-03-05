@@ -1,8 +1,8 @@
 ###
 
-void setToGreen(loc x)
-  { x :-> p ** StopLight(p) }
-  { x :-> q ** StopLight(q) ** (q+2) :-> 1 }
+void cycleLight(loc x)
+  { x :-> p ** StopLight(p, red, yellow, green) }
+  { x :-> q ** StopLight(q, green, red, yellow) }
 {
   ??
 }
